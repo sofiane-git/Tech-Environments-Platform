@@ -1,0 +1,110 @@
+# Env Test query and mutation here
+# READ
+query GET_ALL_ENV {
+  getAllEnv {
+    _id
+    name
+    isFree
+    createdAt
+    updatedAt
+    updatedBy {
+      _id
+      email
+    }
+    createdBy {
+      _id
+      email
+    }
+  }
+}
+
+query GET_ENV_BY_ID($id: ID!) {
+  getEnvByID(id: $id) {
+    id
+    name
+    isFree
+    createdAt
+    updatedAt
+    updatedBy
+  }
+}
+# Example of variable for research env by id
+# {
+#    "id": "61e039bdeb23f4e937ddd4f3"
+# }
+
+# CREATE
+mutation CREATE_NEW_ENV($createNewEnvInput: CreateEnvInput!) {
+  createNewEnv(input: $createNewEnvInput) {
+    _id
+    name
+    createdAt
+    createdBy {
+      _id
+      email
+    }
+  }
+}
+# Example of variable for create new env test
+#  "createNewEnvInput": {
+#     "email": "test@s.s",
+#     "name": "earth"
+#   }
+
+# UPDATE
+mutation UPDATE_ENV_NAME_BY_ID($input: UpdateEnvNameInput!, $id: String!) {
+  updateEnvNameById(input: $input, id: $id) {
+    _id
+    name
+    isFree
+    createdAt
+    updatedAt
+    updatedBy {
+      _id
+      email
+    }
+  }
+}
+
+# Example of variable for edit env name
+# {
+#   "input": {
+#     "email": "test@s.s",
+#     "name": "sun"
+#   },
+#   "id": "62978a2b53d0eb19a615a995"
+# }
+
+mutation UPDATE_ENV_DISPONIBILITY_BY_ID(
+  $input: UpdateEnvDisponibilityInput!
+  $id: String!
+) {
+  updateEnvDisponibilityById(input: $input, id: $id) {
+    _id
+    name
+    isFree
+    updatedAt
+    updatedBy {
+      _id
+      email
+    }
+  }
+}
+
+# Example of variable for edit env disponibility
+# {
+#   "input": {
+#     "email": "test@s.s",
+#     "isFree": false
+#   },
+#   "id": "62978a2b53d0eb19a615a995"
+# }
+
+# DELETE
+mutation DELETE_ENV_BY_ID($id: String!) {
+  deleteEnvById(id: $id)
+}
+# Example of variable for delete env test
+# {
+#    "id": "62978a2b53d0eb19a615a995",
+# }

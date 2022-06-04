@@ -1,0 +1,52 @@
+query GET_ALL_USER {
+  getAllUsers {
+    _id
+    email
+    createdAt
+  }
+}
+
+mutation CREATE_USER($input: CreateUserInput!) {
+  createUser(input: $input) {
+    _id
+    email
+    createdAt
+  }
+}
+# {
+#   "input": {
+#     "email": "test@test.ts"
+#   }
+# }
+
+mutation DELETE_USER_BY_ID($id: ID!) {
+  deleteUserById(id: $id) {
+    id
+    message
+    success
+  }
+}
+# {
+#   "id": "61e058fb0b8602d6a130d8cc"
+# }
+
+mutation EDIT_USER_BY_ID($id: ID!, $updateUser: userInput!) {
+  editUserById(id: $id, updateUser: $updateUser) {
+    id
+    firstName
+    lastName
+    email
+    password
+    createdAt
+    updatedAt
+  }
+}
+#  {
+#   "id": "61e0596cce3856a0938fcfd9",
+#   "updateUser": {
+#     "firstName": "Nom updated 2",
+#     "lastName": "Prénom updated 2",
+#     "email": "soso@coco.fr",
+#     "password": "test"
+#   }
+# }

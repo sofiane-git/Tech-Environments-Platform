@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn {
+        @apply rounded w-1/2 self-center text-sm py-2 transition-colors focus:outline-none disabled:opacity-50;
+    }
+
+    .btn-blue {
+        @apply bg-blue-200 text-blue-800 border border-blue-400;
+    }
+    
+    .btn-blue:enabled:hover {
+        @apply bg-blue-600 text-blue-50;
+    }
+
+    .btn-orange {
+        @apply bg-orange-200 text-orange-800 border border-orange-400;
+    }
+
+    .btn-orange:enabled:hover {
+        @apply bg-orange-600 text-orange-50;
+    }
+
+    .btn-gray {
+        @apply bg-gray-200 text-black text-opacity-70 hover:bg-gray-300;
+    }
+
+
+    .inputForm {
+        @apply rounded border p-2 text-sm focus:shadow-lg border-gray-500 focus:outline-none focus:ring-1 focus:border-blue-300  w-3/4 my-1;
+    }
+
+
+    .errorMessage {
+        @apply text-center text-red-500 text-sm;
+    }
+
+    .titleForm {
+        @apply mx-2 cursor-pointer text-center hover:opacity-75 transition-all origin-center;
+    }
+
+}
