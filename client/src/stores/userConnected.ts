@@ -5,6 +5,8 @@ interface User {
   firstName: string;
   lastName: string;
   fullName: string;
+  isAuth: boolean;
+  isInit: boolean;
 }
 
 const userConnected = defineStore({
@@ -19,6 +21,8 @@ const userConnected = defineStore({
     getUserConnectedFirstName: (state) => state.user["firstName"],
     getUserConnectedLastName: (state) => state.user["lastName"],
     getUserConnectedFullName: (state) => state.user["fullName"],
+    getUserConnectedIsAuth: (state) => state.user["isAuth"],
+    getUserConnectedIsInit: (state) => state.user["isInit"],
   },
 
   actions: {
@@ -40,9 +44,24 @@ const userConnected = defineStore({
       this.user.firstName = firstNameCapitalize;
       this.user.lastName = lastNameCapitalize;
       this.user.fullName = `${lastNameCapitalize} ${firstNameCapitalize}`;
+      this.user.isAuth = false;
+      this.user.isInit = false;
     },
     resetUserConnected() {
-      this.user = { email: "", firstName: "", lastName: "", fullName: "" };
+      this.user = {
+        email: "",
+        firstName: "",
+        lastName: "",
+        fullName: "",
+        isAuth: false,
+        isInit: false,
+      };
+    },
+    handleIsAuth(bool: boolean) {
+      this.user.isAuth = bool;
+    },
+    handleIsInit(bool: boolean) {
+      this.user.isInit = bool;
     },
   },
 });

@@ -1,14 +1,17 @@
 <template>
   <div class="h-3/5 flex flex-col items-center justify-between">
-    <h3 class="uppercase">Identification requise</h3>
+    <Text tag="h3" text-custom-class="uppercase">Identification requise</Text>
     <div class="text-center">
-      <p class="mb-1">Pour consulter les environnements de test,</p>
-      <p>il vous faut utiliser votre adresse mail Skilleos</p>
+      <Text tag="p"
+        >Pour consulter les environnements de test, <br />
+        il vous faut utiliser votre adresse mail Skilleos</Text
+      >
     </div>
-    <GoogleAuth />
+    <google-auth />
   </div>
 </template>
 
 <script setup lang="ts">
-import GoogleAuth from "../components/form/GoogleAuth.vue";
+import { Text } from "../components/atoms";
+import { GoogleAuth, ProfilMenu } from "../components/organisms";
 </script>
