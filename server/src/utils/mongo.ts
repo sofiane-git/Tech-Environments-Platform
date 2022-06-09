@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { URI } from "../config";
+import {  URI } from "../config";
 
 const options = {
   useNewUrlParser: true,

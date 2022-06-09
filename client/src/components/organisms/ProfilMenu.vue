@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div v-if="!useUserConnected.getUserConnectedIsInit">
+    <div v-if="!useUserConnected.isInit">
       <icon-loading />
     </div>
 
     <div v-else>
       <Button
-        v-if="useUserConnected.getUserConnectedIsAuth"
+        v-if="useUserConnected.isAuth"
         custom-button-class="relative rounded-none hover:shadow-none border-none active:shadow-none focus:outline-none"
         @focusout="clickOnProfileMenu && (clickOnProfileMenu = false)"
       >
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref, watch, watchEffect } from "vue";
+import { inject, ref, watchEffect } from "vue";
 import { Icon, IconLoading, Button } from "../atoms";
 import { ItemMenu } from "../molecules";
 import icons from "../../assets/icons";
@@ -47,12 +47,12 @@ const Vue3GoogleOauth: any = inject("Vue3GoogleOauth");
 const useUserConnected = userConnected();
 const router = useRouter();
 
-onMounted(() => {
-  useUserConnected.handleIsInit(false);
-});
+useUserConnected.handleIsInit(false);
 watchEffect(async () => {
   if (Vue3GoogleOauth.isInit) {
     useUserConnected.handleIsInit(true);
+    useUserConnected.isInit;
+
     if (!localStorage.userConnected) {
       await Vue3GoogleOauth.instance.signOut();
     }

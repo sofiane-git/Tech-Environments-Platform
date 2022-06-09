@@ -1,5 +1,9 @@
 import { defineStore } from "pinia";
 
+interface authInfo {
+  message: string;
+  success: boolean;
+}
 interface User {
   email: string;
   firstName: string;
@@ -7,6 +11,7 @@ interface User {
   fullName: string;
   isAuth: boolean;
   isInit: boolean;
+  authInfo?: authInfo;
 }
 
 const userConnected = defineStore({
@@ -16,13 +21,14 @@ const userConnected = defineStore({
     user: {} as unknown as User,
   }),
   getters: {
-    getUserConnected: (state) => state.user,
-    getUserConnectedEmail: (state) => state.user["email"],
-    getUserConnectedFirstName: (state) => state.user["firstName"],
-    getUserConnectedLastName: (state) => state.user["lastName"],
-    getUserConnectedFullName: (state) => state.user["fullName"],
-    getUserConnectedIsAuth: (state) => state.user["isAuth"],
-    getUserConnectedIsInit: (state) => state.user["isInit"],
+    getUser: (state) => state.user,
+    getEmail: (state) => state.user["email"],
+    getFirstName: (state) => state.user["firstName"],
+    getLastName: (state) => state.user["lastName"],
+    getFullName: (state) => state.user["fullName"],
+    isAuth: (state) => state.user["isAuth"],
+    isInit: (state) => state.user["isInit"],
+    getAuthInfo: (state) => state.user.authInfo,
   },
 
   actions: {
@@ -47,6 +53,9 @@ const userConnected = defineStore({
       this.user.isAuth = false;
       this.user.isInit = false;
     },
+    setAuthInfo(authInfo: authInfo) {
+      this.user.authInfo = { ...authInfo };
+    },
     resetUserConnected() {
       this.user = {
         email: "",
@@ -55,6 +64,10 @@ const userConnected = defineStore({
         fullName: "",
         isAuth: false,
         isInit: false,
+        authInfo: {
+          message: "",
+          success: false,
+        },
       };
     },
     handleIsAuth(bool: boolean) {

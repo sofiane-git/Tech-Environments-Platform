@@ -1,14 +1,11 @@
-
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
-// import { EnvTestEntity } from "../../graphql/entities";
 import { CreateEnvInput, EnvTest, EnvTestModel, UpdateEnvDisponibilityInput, UpdateEnvNameInput } from "../schema/envTest.schema";
 import { UserModel } from "../schema/user.schema";
-// import EnvInputEntity from "../entities/inputs";
-
 
 @Resolver(() => EnvTest)
 class EnvTestResolver
 {
+  // @Authorized()
   @Query(() => [EnvTest])
   async getAllEnv() {
     const allEnvTest = await EnvTestModel.find();

@@ -1,5 +1,5 @@
 import { getModelForClass, prop } from "@typegoose/typegoose";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class User
@@ -11,6 +11,22 @@ export class User
   @prop({required: true, unique: true})
   email: string;
 
+  @Field(() => String, { nullable: true })
+  @prop({required: false})
+  avatar: string;
+
+  @Field(() => String, { nullable: false })
+  @prop({required: true})
+  provider: string;
+
+  @Field(() => String, { nullable: false })
+  @prop({required: true})
+  providerId: string;
+
+  @Field(() => [String], { nullable: false })
+  @prop({required: true})
+  roles: string[];
+
   @Field(() => String)
   createdAt: string;
 
@@ -19,30 +35,30 @@ export class User
 export const UserModel = getModelForClass(User, { schemaOptions: { timestamps: true } });
 
 
-// @ObjectType()
-// export class UserActivities
-// {
-//   @Field(() => Int, { nullable: false })
-//   @prop({required: true})
-//   value: number;
-
-//   @Field(() => Boolean, {nullable: false})
-//   @prop({required: true})
-//   takeEnv: boolean;
-
-//   @Field(() => User, {nullable: false})
-//   @prop({required: true, unique: true})
-//   user: User
-
-//   @Field(() => String)
-//   createdAt: string;
-// }
-
-@InputType()
-export class CreateUserInput
+@ObjectType()
+  export class SuccessInfo
 {
+
   @Field(() => String, {nullable: false})
   @prop({required: true})
-  email: string;
-}
+  message: string;
+
+  @Field(() => Boolean, {nullable: false})
+  @prop({required: true})
+  success: boolean;
+
+  }
+// @InputType()
+// export class CreateUserInput
+// {
+//   @Field(() => String, {nullable: false})
+//   @prop({required: true})
+//   email: string;
+
+//   @Field(() => [String], {nullable: false})
+//   @prop({required: true, default: "ADMIN"})
+//   roles: string[];
+
+// }
+
 

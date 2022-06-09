@@ -13,8 +13,7 @@ import {
 import gAuthPlugin from "vue3-google-oauth2";
 
 const gAuthOptions = {
-  clientId:
-    "397288314817-d717knmpc96oqdfks1m5e3itcab0v006.apps.googleusercontent.com",
+  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
   scope: "email",
   prompt: "consent",
   fetch_basic_profile: false,

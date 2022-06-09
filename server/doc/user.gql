@@ -6,17 +6,14 @@ query GET_ALL_USER {
   }
 }
 
-mutation CREATE_USER($input: CreateUserInput!) {
-  createUser(input: $input) {
-    _id
-    email
-    createdAt
+mutation GOOGLE_AUTH($tokenId: String!) {
+  googleAuth(tokenId: $tokenId) {
+    message
+    success
   }
 }
 # {
-#   "input": {
-#     "email": "test@test.ts"
-#   }
+# "tokenId": "fqnsvfksqbv<sbv<sbvk<sbvk<sbvk<s"
 # }
 
 mutation DELETE_USER_BY_ID($id: ID!) {

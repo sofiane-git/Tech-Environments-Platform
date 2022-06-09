@@ -12,6 +12,7 @@ interface Env
   URI: string;
   URI_LOCALE: string;
   SECRET: string;
+  GOOGLE_CLIENT_ID: string;
 }
 export const {
   BASE_URL,
@@ -22,4 +23,5 @@ export const {
   URI,
   URI_LOCALE,
   SECRET,
+  GOOGLE_CLIENT_ID
 } = parsed as unknown as Env;

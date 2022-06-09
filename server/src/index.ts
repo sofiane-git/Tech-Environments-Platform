@@ -7,13 +7,15 @@ import http from 'http';
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { resolvers } from "./graphql";
 import { connectToMongo } from "./utils/mongo";
+import { authChecker } from "./graphql/middlewares/authChecker";
+// import { Context } from "./graphql/interfaces/context";
 
 
 const bootstrap = async () =>
 {
   const schema = await buildSchema({
     resolvers,
-
+    authChecker
   })
   const app: Express = express();
 
@@ -21,11 +23,7 @@ const bootstrap = async () =>
   
   const server = new ApolloServer({
     schema,
-    context: (ctx) =>
-    {
-      // console.log('ctx | ', ctx);
-      return ctx;
-    },
+    context: ({req}: any) => ({req}),
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
 

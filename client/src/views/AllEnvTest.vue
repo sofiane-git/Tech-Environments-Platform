@@ -25,7 +25,7 @@
         <div v-else class="w-2/4 text-center">
           <Text tag="p" class="text-red-600">Occupé</Text>
           <Text tag="p" class="text-xs capitalize">
-            {{ useUserConnected.getUserConnectedFullName }} <br />
+            {{ useUserConnected.getFullName }} <br />
             {{
               format(parseInt(env.updatedAt), "dd MMMM yyyy", { locale: fr })
             }}
@@ -33,16 +33,6 @@
           </Text>
         </div>
         <div class="w-1/4 grid">
-          <!-- <button
-            class="btn disabled:bg-gray-200"
-            :class="env.isFree ? 'btn-blue' : 'btn-orange'"
-            @click="(envToUpdate = env), displayPopup(env._id, false)"
-          >
-            <span v-if="env.isFree" title="Utiliser environnement"
-              >Utiliser</span
-            >
-            <span v-else title="Libérer environnement">Libérer</span>
-          </button> -->
           <handle-activate
             :activate="!env.isFree"
             @click="(envToUpdate = env), displayPopup(env._id, false)"
@@ -87,14 +77,6 @@
         </Button>
       </div>
     </div>
-    <!-- <GoogleAuth
-      class="absolute bottom-0 left-0"
-      :class="
-        popup.busy || popup.free || popup.deletedFor
-          ? 'blur-sm pointer-events-none'
-          : 'blur-none'
-      "
-    /> -->
   </div>
 </template>
 
@@ -117,10 +99,6 @@ import { GoogleAuth } from "../components/organisms";
 import userConnected from "../stores/userConnected";
 import envListStore from "../stores/envListStore";
 
-// const activate: Ref<boolean> = ref(false);
-
-// const Vue3GoogleOauth: any = inject("Vue3GoogleOauth");
-
 interface Env {
   _id: string;
   name: string;
@@ -138,7 +116,11 @@ const useEnvList = envListStore();
 const { result, loading, error } = useQuery(GET_ALL_ENV);
 
 // Rafraichissement du store
-watch(loading, () => useEnvList.refreshEnvList(result.value.getAllEnv));
+watch(loading, () => {
+  if (!error.value) {
+    useEnvList.refreshEnvList(result.value.getAllEnv);
+  }
+});
 
 // Gérer la popup de prévention
 const popup = ref({ envName: "", free: false, busy: false, deletedFor: false });
@@ -168,9 +150,6 @@ const displayPopup = (idForChangement: any, isForDeleted: any) => {
 
 // Changer le statut de disponibilité
 const envToUpdate: Ref<Env | undefined> = ref();
-watch(envToUpdate, () => {
-  console.log(envToUpdate.value);
-});
 
 const resetStatusDisponibility = () => {
   popup.value.free = false;
@@ -183,7 +162,7 @@ const { mutate: updateEnvDisponibilityByID, onError: errorOnEditedEnv } =
       id: envToUpdate.value?._id,
       input: {
         isFree: !envToUpdate.value?.isFree,
-        email: useUserConnected.getUserConnectedEmail,
+        email: useUserConnected.getEmail,
       },
     },
     update: (cache) => {
