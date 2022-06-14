@@ -3,19 +3,21 @@ import 'reflect-metadata';
 import express, { Express } from "express";
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server-express";
+// import jwt, { JwtPayload } from 'jsonwebtoken';
 import http from 'http';
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { resolvers } from "./graphql";
 import { connectToMongo } from "./utils/mongo";
-import { authChecker } from "./graphql/middlewares/authChecker";
-// import { Context } from "./graphql/interfaces/context";
+// import authChecker from "./graphql/middlewares/authChecker";
+// import Context from "./graphql/types/context";
 
+export const jwtKey = 'my_secret_key_that_must_be_very_long';
 
 const bootstrap = async () =>
 {
   const schema = await buildSchema({
     resolvers,
-    authChecker
+    
   })
   const app: Express = express();
 
@@ -23,7 +25,7 @@ const bootstrap = async () =>
   
   const server = new ApolloServer({
     schema,
-    context: ({req}: any) => ({req}),
+    context: ({ req, res }: any) => ({ req, res }),
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
 

@@ -5,6 +5,10 @@ const GET_ALL_USER = gql`
     getAllUsers {
       _id
       email
+      avatar
+      provider
+      providerId
+      roles
       createdAt
     }
   }

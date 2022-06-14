@@ -1,4 +1,5 @@
 import { getModelForClass, prop } from "@typegoose/typegoose";
+import { IsEmail } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
@@ -7,6 +8,7 @@ export class User
   @Field(() => ID)
   _id: string;
 
+  @IsEmail()
   @Field(() => String, {nullable: false})
   @prop({required: true, unique: true})
   email: string;
@@ -35,19 +37,7 @@ export class User
 export const UserModel = getModelForClass(User, { schemaOptions: { timestamps: true } });
 
 
-@ObjectType()
-  export class SuccessInfo
-{
 
-  @Field(() => String, {nullable: false})
-  @prop({required: true})
-  message: string;
-
-  @Field(() => Boolean, {nullable: false})
-  @prop({required: true})
-  success: boolean;
-
-  }
 // @InputType()
 // export class CreateUserInput
 // {

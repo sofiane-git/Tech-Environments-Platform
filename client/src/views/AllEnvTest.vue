@@ -98,20 +98,14 @@ import { IconLoading, HandleActivate, Text, Button } from "../components/atoms";
 import { GoogleAuth } from "../components/organisms";
 import userConnected from "../stores/userConnected";
 import envListStore from "../stores/envListStore";
-
-interface Env {
-  _id: string;
-  name: string;
-  isFree: boolean;
-  createdAt: string;
-  createdBy: string;
-  updatedAt: string;
-  updatedBy: string;
-}
+import { useRouter } from "vue-router";
+import type { Env } from "../interfaces/Env";
 
 const useUserConnected = userConnected();
 const useEnvList = envListStore();
+const router = useRouter();
 
+// console.log("useUserConnected | ", useUserConnected.getUser);
 // Liste des environnements
 const { result, loading, error } = useQuery(GET_ALL_ENV);
 

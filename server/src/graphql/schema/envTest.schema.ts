@@ -1,4 +1,5 @@
 import { getModelForClass, prop } from "@typegoose/typegoose";
+import { IsEmail } from "class-validator";
 // import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { Field, ID, InputType, ObjectType } from "type-graphql"
 import { User } from "./user.schema";
@@ -40,7 +41,9 @@ export class EnvTest
 export const EnvTestModel = getModelForClass(EnvTest, { schemaOptions: { timestamps: true } });
 
 @InputType()
-export class CreateEnvInput implements Partial<User>
+// export class CreateEnvInput implements Partial<User>
+export class CreateEnvInput
+
 {
   @Field(() => String)
   @prop({required: true, unique: true})
@@ -49,9 +52,10 @@ export class CreateEnvInput implements Partial<User>
   @Field(() => Boolean, {nullable: true})
   isFree?: boolean = true;
 
+  @IsEmail()
   @Field(() => String, {nullable: false})
-  @prop({required: true})
-  email: string;
+  @prop({required: true, trim: true})
+  email: User['email'];
 
 }
 

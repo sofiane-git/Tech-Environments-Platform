@@ -1,14 +1,5 @@
 import { defineStore } from "pinia";
-
-interface Env {
-  _id: string;
-  name: string;
-  isFree: boolean;
-  createdAt: string;
-  createdBy: string;
-  updatedAt: string;
-  updatedBy: string;
-}
+import type { Env } from "../interfaces/Env";
 
 const envListStore = defineStore({
   id: "envListStore",

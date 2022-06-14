@@ -1,29 +1,41 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { CreateEnvInput, EnvTest, EnvTestModel, UpdateEnvDisponibilityInput, UpdateEnvNameInput } from "../schema/envTest.schema";
+import { SuccessInfo } from "../schema/succesInfo.schema";
 import { UserModel } from "../schema/user.schema";
+// import Context from "../types/context";
+// import { User } from "../types/user";
 
 @Resolver(() => EnvTest)
 class EnvTestResolver
 {
-  // @Authorized()
+  
   @Query(() => [EnvTest])
   async getAllEnv() {
     const allEnvTest = await EnvTestModel.find();
     return allEnvTest;
   }
 
-  @Mutation(() => EnvTest)
+  @Mutation(() => SuccessInfo)
   async createNewEnv(
     @Arg('input') input: CreateEnvInput,
   )
   {
-    const emailInUserList = await UserModel.findOne({ email: input["email"] })
-    
-    if (emailInUserList) {
-      const result = await EnvTestModel.create({ ...input, createdBy: emailInUserList });
-      return result;
+    const userFindByEmail = await UserModel.findOne({ email: input["email"] })
+    console.log('userFindByEmail | ', userFindByEmail);
+    if (userFindByEmail) {
+      const result = await EnvTestModel.create({ ...input, createdBy: userFindByEmail });
+      console.log('result | ', result);
+      return {
+        message: 'Environnement enregistré',
+        success: true
+
+      };
     }
-    return;
+    return {
+      message: 'Problème d\'ajout d\'environnement',
+      success: false
+
+    };
   }
 
   @Mutation(() => EnvTest)
@@ -32,12 +44,12 @@ class EnvTestResolver
     @Arg('input') input: UpdateEnvDisponibilityInput,
   )
   { 
-    const emailInUserList = await UserModel.findOne({ email: input["email"] })
+    const userFindByEmail = await UserModel.findOne({ email: input["email"] })
     
-    if (emailInUserList) {
+    if (userFindByEmail) {
       const editedEnv = await EnvTestModel.findByIdAndUpdate(
         _id,
-        { ...input, updatedBy: emailInUserList },
+        { ...input, updatedBy: userFindByEmail },
         { new: true }
       );
       return editedEnv;
@@ -52,13 +64,13 @@ class EnvTestResolver
     @Arg('input') input: UpdateEnvNameInput,
   )
   { 
-    const emailInUserList = await UserModel.findOne({ email: input["email"] })
-    console.log('emailInUserList | ', emailInUserList);
+    const userFindByEmail = await UserModel.findOne({ email: input["email"] })
+    console.log('userFindByEmail | ', userFindByEmail);
     
-    if (emailInUserList) {
+    if (userFindByEmail) {
       const editedEnv = await EnvTestModel.findByIdAndUpdate(
         _id,
-        { ...input, updatedBy: emailInUserList },
+        { ...input, updatedBy: userFindByEmail },
         { new: true }
       );
       return editedEnv;

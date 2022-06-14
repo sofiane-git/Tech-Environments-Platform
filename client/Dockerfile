@@ -4,6 +4,5 @@ COPY package.json ./
 COPY yarn.lock ./
 COPY tsconfig.json ./
 COPY tsconfig.*.json ./
-RUN yarn install
+RUN yarn
 COPY . .
-CMD yarn dev

@@ -1,9 +1,5 @@
+import type { User } from "../interfaces/User";
 import { defineStore } from "pinia";
-
-interface User {
-  email: string;
-  createdAt: string;
-}
 
 const usersListStore = defineStore({
   id: "usersListStore",
@@ -22,6 +18,9 @@ const usersListStore = defineStore({
     refreshUsersList(users: User[]) {
       this.users = [...users];
     },
+  },
+  persistedState: {
+    persist: false,
   },
 });
 

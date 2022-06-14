@@ -27,5 +27,32 @@
 </template>
 
 <script lang="ts" setup>
+import { inject, watchEffect } from "vue";
 import { ProfilMenu } from "./components/organisms";
+import userConnected from "./stores/userConnected";
+
+const Vue3GoogleOauth: any = inject("Vue3GoogleOauth");
+const useUserConnected = userConnected();
+const userStorage =
+  localStorage.userConnected && JSON.parse(localStorage.userConnected).user;
+
+watchEffect(async () => {
+  if (Vue3GoogleOauth.isInit) {
+    useUserConnected.handleIsInit(true);
+
+    if (Vue3GoogleOauth.isAuthorized) {
+      if (!userStorage.email) {
+        console.log("signout");
+
+        await Vue3GoogleOauth.instance.signOut();
+      }
+      useUserConnected.handleIsAuth(true);
+      // console.log("auth", useUserConnected.isAuth);
+    } else {
+      useUserConnected.handleIsAuth(false);
+    }
+  } else {
+    useUserConnected.handleIsInit(false);
+  }
+});
 </script>

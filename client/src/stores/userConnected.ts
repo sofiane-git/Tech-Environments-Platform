@@ -1,30 +1,15 @@
+import type { UserConnected, AuthInfo, User } from "../interfaces/User";
 import { defineStore } from "pinia";
-
-interface authInfo {
-  message: string;
-  success: boolean;
-}
-interface User {
-  email: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  isAuth: boolean;
-  isInit: boolean;
-  authInfo?: authInfo;
-}
 
 const userConnected = defineStore({
   id: "userConnected",
 
   state: () => ({
-    user: {} as unknown as User,
+    user: {} as unknown as UserConnected,
   }),
   getters: {
     getUser: (state) => state.user,
     getEmail: (state) => state.user["email"],
-    getFirstName: (state) => state.user["firstName"],
-    getLastName: (state) => state.user["lastName"],
     getFullName: (state) => state.user["fullName"],
     isAuth: (state) => state.user["isAuth"],
     isInit: (state) => state.user["isInit"],
@@ -32,42 +17,35 @@ const userConnected = defineStore({
   },
 
   actions: {
-    setUserConnected(userEmail: User["email"]) {
-      const firstName = userEmail.split("@")[0].split(".")[1];
-      const lastName = userEmail.split("@")[0].split(".")[0];
+    setUserConnected(user: User) {
+      console.log("user | ", user);
+      const firstName = user.email?.split("@")[0].split(".")[1];
+      const lastName = user.email?.split("@")[0].split(".")[0];
 
-      const firstNameCapitalize = firstName.replace(
+      const firstNameCapitalize = firstName?.replace(
         firstName.split("")[0],
         firstName.split("")[0].toUpperCase()
       );
 
-      const lastNameCapitalize = lastName.replace(
+      const lastNameCapitalize = lastName?.replace(
         lastName.split("")[0],
         lastName.split("")[0].toUpperCase()
       );
 
-      this.user.email = userEmail;
-      this.user.firstName = firstNameCapitalize;
-      this.user.lastName = lastNameCapitalize;
+      this.user.email = user.email;
       this.user.fullName = `${lastNameCapitalize} ${firstNameCapitalize}`;
       this.user.isAuth = false;
       this.user.isInit = false;
+      this.user.role = user.roles;
+      console.log(this.user);
     },
-    setAuthInfo(authInfo: authInfo) {
+    setAuthInfo(authInfo: AuthInfo) {
       this.user.authInfo = { ...authInfo };
     },
     resetUserConnected() {
       this.user = {
-        email: "",
-        firstName: "",
-        lastName: "",
-        fullName: "",
         isAuth: false,
         isInit: false,
-        authInfo: {
-          message: "",
-          success: false,
-        },
       };
     },
     handleIsAuth(bool: boolean) {
@@ -77,6 +55,9 @@ const userConnected = defineStore({
       this.user.isInit = bool;
     },
   },
+  // persistedState: {
+  //   includePaths: ["user.isAuth", "user.isInit", "user.email"],
+  // },
 });
 
 export default userConnected;

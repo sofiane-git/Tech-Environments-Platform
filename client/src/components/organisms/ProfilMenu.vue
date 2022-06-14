@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, watchEffect } from "vue";
+import { inject, onMounted, ref, watch, watchEffect } from "vue";
 import { Icon, IconLoading, Button } from "../atoms";
 import { ItemMenu } from "../molecules";
 import icons from "../../assets/icons";
@@ -46,18 +46,6 @@ const Vue3GoogleOauth: any = inject("Vue3GoogleOauth");
 
 const useUserConnected = userConnected();
 const router = useRouter();
-
-useUserConnected.handleIsInit(false);
-watchEffect(async () => {
-  if (Vue3GoogleOauth.isInit) {
-    useUserConnected.handleIsInit(true);
-    useUserConnected.isInit;
-
-    if (!localStorage.userConnected) {
-      await Vue3GoogleOauth.instance.signOut();
-    }
-  }
-});
 
 const clickOnProfileMenu = ref(false);
 
@@ -74,10 +62,10 @@ const handleClickOnProfileMenu = () => {
 const handleSignOut = async () => {
   try {
     await Vue3GoogleOauth.instance.signOut();
-
     useUserConnected.resetUserConnected();
     handleClickOnProfileMenu();
     router.push("/");
+    router.beforeResolve(() => router.go(0));
   } catch (error) {
     console.log(error);
     return null;

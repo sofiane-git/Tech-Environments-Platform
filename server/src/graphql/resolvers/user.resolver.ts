@@ -1,5 +1,6 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { SuccessInfo, User, UserModel } from "../schema/user.schema";
+import { User, UserModel } from "../schema/user.schema";
+import {SuccessInfo} from "../schema/succesInfo.schema"
 import { OAuth2Client } from 'google-auth-library';
 import { GOOGLE_CLIENT_ID } from "../../config";
 
