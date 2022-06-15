@@ -1,9 +1,37 @@
-node_modules
-.DS_Store
+# GENERAL #
 dist
 dist-ssr
 *.local
+.idea
+coverage
+# Modules
+node_modules
+.DS_Store
+# Logs
+*.log*
+logs
+# Config
 .env
 .dockerignore
-data
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 .idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# Data
+/data
+
+
+# CLIENT #
+# Test
+*/cypress/videos/
+*/cypress/screenshots/
+*/src/views/HomeView.vue
+# Readme
+client/README.md
+
+# SERVER #

@@ -11,7 +11,6 @@ const usersListStore = defineStore({
     getUsersListDetails: (state) => state.users,
     getUsersEmail: (state) => state.users.map((user) => user.email),
     getUsersCreation: (state) => state.users.map((user) => user.createdAt),
-    // getUsersFullName: (state) => state.users.map((user) => user.fullName),
   },
 
   actions: {
