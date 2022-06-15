@@ -4,21 +4,6 @@
 
     <Text tag="p" v-else-if="error">Erreur: Problème de chargement...</Text>
     <div v-else-if="result && result.getAllEnv" class="grid">
-      <!-- <Button
-        @click="padlock = !padlock"
-        custom-button-class="p-0 border-0 w-6 justify-self-end m-2"
-      >
-        <Icon
-          type="outline"
-          :d="
-            padlock
-              ? [{ path: icons.padlock_close.outline.path }]
-              : [{ path: icons.padlock_open.outline.path }]
-          "
-          title="Appuyez pour débloquer"
-          custom-class="transition-all"
-        />
-      </Button> -->
       <ul
         class="flex flex-col justify-center mb-7"
         :class="
@@ -110,7 +95,7 @@
         <Text
           class="bg-red-50 px-1 a-navlink"
           tag="a"
-          href="https://slack.com/app_redirect?channel=C03KUSEMGLR"
+          :href="config.VITE_SLACK_CHANNEL_PLATFORM"
           target="_blank"
           >#tech-environments-platform</Text
         >
@@ -144,34 +129,23 @@ import { logErrorMessages } from "@vue/apollo-util";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import GET_ALL_ENV from "../graphql/Queries/envTest/GET_ALL_ENV";
-import {
-  CREATE_NEW_ENV,
-  DELETE_ENV_BY_ID,
-  UPDATE_ENV_DISPONIBILITY_BY_ID,
-  UPDATE_ENV_NAME_BY_ID,
-} from "../graphql/Mutations/envTest";
+import { UPDATE_ENV_DISPONIBILITY_BY_ID } from "../graphql/Mutations/envTest";
 import {
   IconLoading,
   HandleActivate,
   Text,
   Button,
-  NavLink,
   Icon,
 } from "../components/atoms";
-import { InputField } from "../components/molecules";
-import { GoogleAuth } from "../components/organisms";
 import userConnected from "../stores/userConnected";
 import envListStore from "../stores/envListStore";
-import { useRouter } from "vue-router";
 import type { Env } from "../interfaces/Env";
 import icons from "../assets/icons";
+import config from "../config";
 
 const useUserConnected = userConnected();
 const useEnvList = envListStore();
-const router = useRouter();
 
-const padlock = ref(true);
-// console.log("useUserConnected | ", useUserConnected.getUser);
 // Liste des environnements
 const { result, loading, error } = useQuery(GET_ALL_ENV);
 

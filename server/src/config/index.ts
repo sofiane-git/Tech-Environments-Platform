@@ -2,7 +2,7 @@ import { config } from "dotenv";
 
 const { parsed } = config();
 
-interface Env
+interface Config
 {
   BASE_URL: string;
   PORT: string;
@@ -26,4 +26,4 @@ export const {
   SECRET,
   GOOGLE_CLIENT_ID,
   SLACK_WEBHOOK_URL
-} = parsed as unknown as Env;
+} = parsed as unknown as Config;

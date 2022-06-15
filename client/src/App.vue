@@ -1,7 +1,4 @@
 <template>
-  <!-- <Suspense>
-    <template #fallback>Loading...</template>
-    <template #default> -->
   <div class="h-screen w-full dark:bg-neutral-900">
     <div class="sm:w-4/5 md:w-3/4 lg:w-3/5 h-full mx-auto">
       <header
@@ -22,8 +19,6 @@
       </main>
     </div>
   </div>
-  <!-- </template> -->
-  <!-- </Suspense> -->
 </template>
 
 <script lang="ts" setup>
@@ -42,12 +37,9 @@ watchEffect(async () => {
 
     if (Vue3GoogleOauth.isAuthorized) {
       if (!userStorage.email) {
-        console.log("signout");
-
         await Vue3GoogleOauth.instance.signOut();
       }
       useUserConnected.handleIsAuth(true);
-      // console.log("auth", useUserConnected.isAuth);
     } else {
       useUserConnected.handleIsAuth(false);
     }

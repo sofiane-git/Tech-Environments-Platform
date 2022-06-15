@@ -1,5 +1,5 @@
 import { IncomingWebhook } from '@slack/webhook';
-import { SLACK_WEBHOOK_URL } from '../../config'
+import { SLACK_WEBHOOK_URL } from '../config'
 
 export const url = SLACK_WEBHOOK_URL;
 

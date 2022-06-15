@@ -11,9 +11,10 @@ import {
   InMemoryCache,
 } from "@apollo/client/core";
 import gAuthPlugin from "vue3-google-oauth2";
+import config from "./config";
 
 const gAuthOptions = {
-  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+  clientId: config.VITE_GOOGLE_CLIENT_ID,
   scope: "email",
   prompt: "consent",
   fetch_basic_profile: false,
