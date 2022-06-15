@@ -49,7 +49,7 @@
         @apply flex items-center absolute top-[-2px] left-2 px-0.5 bg-white text-gray-400 transition-all text-[0.5rem];
     }
     .a-input {
-        @apply border rounded px-2.5 py-2.5 w-full capitalize placeholder:normal-case bg-white hover:shadow placeholder:opacity-50 focus:border-blue-200 focus:outline-0 focus:shadow-sm placeholder:text-sm focus:placeholder:opacity-0 active:shadow-inner transition-all;
+        @apply border rounded px-2.5 py-2.5 w-full capitalize placeholder:normal-case bg-white hover:shadow placeholder:opacity-50 focus:border-blue-200 focus:outline-0 focus:shadow-sm placeholder:text-sm focus:placeholder:opacity-0 active:shadow-inner transition-all disabled:shadow-none disabled:border-none disabled:bg-inherit;
     }
     .a-input-checkbox {
         @apply cursor-pointer hover:shadow-md active:shadow-inner mx-1;

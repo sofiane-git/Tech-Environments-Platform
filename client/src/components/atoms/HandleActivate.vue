@@ -1,12 +1,18 @@
 <template>
   <div
-    class="w-9 h-5 px-[0.1] rounded-xl grid items-center shadow-inner group cursor-pointer shadow-sm hover:shadow"
-    :class="activate ? 'bg-green-400 ' : 'bg-gray-200 '"
+    class="w-9 h-5 rounded-xl grid items-center group cursor-pointer hover:shadow-sm transition-all"
+    :class="
+      activate
+        ? 'justify-self-start shadow-[inset_6px_0px_7px_0_rgb(0,0,0,0.05)] bg-green-400 '
+        : 'bg-gray-200 justify-self-end shadow-[inset_-6px_0px_7px_0_rgb(0,0,0,0.05)]'
+    "
   >
     <div
-      class="w-[1.2rem] h-[1.2rem] bg-white rounded-full transition-all"
+      class="w-[1.1rem] h-[1.1rem] mb-[0.3px] bg-white rounded-full transition-all shadow-slate-300"
       :class="
-        activate ? 'justify-self-end' : 'justify-self-start shadow-gray-400'
+        activate
+          ? 'justify-self-end shadow-[inset_-6px_0px_7px_0_rgb(0,0,0,0.05)]'
+          : 'justify-self-start shadow-[inset_6px_0px_8px_0_rgb(0,0,0,0.05)]'
       "
     ></div>
   </div>

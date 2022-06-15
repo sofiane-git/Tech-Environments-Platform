@@ -13,6 +13,7 @@ interface Env
   URI_LOCALE: string;
   SECRET: string;
   GOOGLE_CLIENT_ID: string;
+  SLACK_WEBHOOK_URL: string;
 }
 export const {
   BASE_URL,
@@ -23,5 +24,6 @@ export const {
   URI,
   URI_LOCALE,
   SECRET,
-  GOOGLE_CLIENT_ID
+  GOOGLE_CLIENT_ID,
+  SLACK_WEBHOOK_URL
 } = parsed as unknown as Env;

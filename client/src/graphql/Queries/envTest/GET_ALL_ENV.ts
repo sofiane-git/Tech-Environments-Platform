@@ -5,6 +5,7 @@ const GET_ALL_ENV = gql`
     getAllEnv {
       _id
       name
+      avatar
       isFree
       createdAt
       updatedAt

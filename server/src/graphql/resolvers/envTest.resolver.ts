@@ -2,8 +2,10 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { CreateEnvInput, EnvTest, EnvTestModel, UpdateEnvDisponibilityInput, UpdateEnvNameInput } from "../schema/envTest.schema";
 import { SuccessInfo } from "../schema/succesInfo.schema";
 import { UserModel } from "../schema/user.schema";
+// import { sendBusyMessage, sendFreeMessage } from "../../webhooks/slack";
 // import Context from "../types/context";
 // import { User } from "../types/user";
+import { slackBodyBusy, slackBodyFree, webhookUrl } from "../../webhooks/slack";
 
 @Resolver(() => EnvTest)
 class EnvTestResolver
@@ -52,6 +54,30 @@ class EnvTestResolver
         { ...input, updatedBy: userFindByEmail },
         { new: true }
       );
+      // console.log(editedEnv);
+      
+      // ENVOI MESSAGE SUR SLACK
+      if (editedEnv?.isFree) {
+        try {
+            await webhookUrl.send(slackBodyFree(editedEnv?.name, editedEnv?.updatedBy?.email, 'https://example.com', editedEnv?.avatar))
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          
+
+          // await webhookUrl.send({
+          //   text: `Environnement occupé => *${ editedEnv?.updatedBy?.email }* utilise *${ editedEnv?.name }*`,
+        
+          // });
+          await webhookUrl.send(slackBodyBusy(editedEnv?.name, editedEnv?.updatedBy?.email, 'https://example.com', editedEnv?.avatar));
+
+        } catch (error) {
+          console.log(error);
+         }
+
+      }
       return editedEnv;
     }
     return;

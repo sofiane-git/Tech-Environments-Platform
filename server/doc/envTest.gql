@@ -36,19 +36,15 @@ query GET_ENV_BY_ID($id: ID!) {
 # CREATE
 mutation CREATE_NEW_ENV($createNewEnvInput: CreateEnvInput!) {
   createNewEnv(input: $createNewEnvInput) {
-    _id
-    name
-    createdAt
-    createdBy {
-      _id
-      email
-    }
+    message
+    success
   }
 }
 # Example of variable for create new env test
 #  "createNewEnvInput": {
 #     "email": "test@s.s",
-#     "name": "earth"
+#     "name": "earth",
+#      "avatar": "https://images.assetsdelivery.com/compings_v2/adisorn123/adisorn1231905/adisorn123190500124.jpg"
 #   }
 
 # UPDATE

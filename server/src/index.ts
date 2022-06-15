@@ -8,6 +8,7 @@ import http from 'http';
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { resolvers } from "./graphql";
 import { connectToMongo } from "./utils/mongo";
+import bodyParser from "body-parser";
 // import authChecker from "./graphql/middlewares/authChecker";
 // import Context from "./graphql/types/context";
 
@@ -20,7 +21,9 @@ const bootstrap = async () =>
     
   })
   const app: Express = express();
-
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json())
+  
   const httpServer = http.createServer(app);
   
   const server = new ApolloServer({

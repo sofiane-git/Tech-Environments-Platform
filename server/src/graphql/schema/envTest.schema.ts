@@ -17,6 +17,10 @@ export class EnvTest
   @prop({required: true, uppercase: true, unique: true})
   name: string;
 
+  @Field(() => String, {nullable: false})
+  @prop({required: true})
+  avatar: string;
+
   @Field(() => Boolean, {nullable: false})
   @prop({required: true})
   isFree: boolean;
@@ -48,6 +52,10 @@ export class CreateEnvInput
   @Field(() => String)
   @prop({required: true, unique: true})
   name: string;
+
+  @Field(() => String, {nullable: false})
+  @prop({required: true})
+  avatar: string;
 
   @Field(() => Boolean, {nullable: true})
   isFree?: boolean = true;

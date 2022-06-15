@@ -11,6 +11,7 @@
       :id="id"
       :placeholder="placeholder"
       :name="name"
+      :disabled="disabled"
       :input-custom-class="inputCustomClass"
       v-on:focus="onFocus = true"
       v-on:focusout="
@@ -33,7 +34,7 @@ defineProps<{
   id?: string;
   placeholder?: string;
   name?: string;
-  labelContent: string;
+  labelContent: string | null;
   inputType: "text" | "email" | "password";
   inputCustomClass?: string;
   disabled?: boolean;

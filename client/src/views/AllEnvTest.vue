@@ -3,61 +3,117 @@
     <icon-loading v-if="loading" />
 
     <Text tag="p" v-else-if="error">Erreur: Problème de chargement...</Text>
-    <ul
-      v-else-if="result && result.getAllEnv"
-      class="flex flex-col justify-center mb-7"
-      :class="
-        popup.busy || popup.free || popup.deletedFor
-          ? 'blur-sm pointer-events-none'
-          : 'blur-none'
-      "
-    >
-      <li
-        class="flex items-center justify-between text-lg h-20 px-8 my-1 rounded shadow-md bg-[#fcfcfc89]"
-        v-for="env in result.getAllEnv"
-        :key="env.id"
-        :env="env"
+    <div v-else-if="result && result.getAllEnv" class="grid">
+      <!-- <Button
+        @click="padlock = !padlock"
+        custom-button-class="p-0 border-0 w-6 justify-self-end m-2"
       >
-        <Text tag="p" class="w-1/4">{{ env.name }}</Text>
-        <Text tag="p" v-if="env.isFree" class="w-2/4 text-green-600 text-center"
-          >Libre</Text
+        <Icon
+          type="outline"
+          :d="
+            padlock
+              ? [{ path: icons.padlock_close.outline.path }]
+              : [{ path: icons.padlock_open.outline.path }]
+          "
+          title="Appuyez pour débloquer"
+          custom-class="transition-all"
+        />
+      </Button> -->
+      <ul
+        class="flex flex-col justify-center mb-7"
+        :class="
+          popup.busy || popup.free || popup.deletedFor
+            ? 'blur-sm pointer-events-none'
+            : 'blur-none'
+        "
+      >
+        <li
+          class="flex items-center justify-between text-lg h-20 pl-8 pr-1 my-1 rounded shadow-md bg-[#fcfcfc89]"
+          v-for="env in result.getAllEnv"
+          :key="env.id"
+          :env="env"
         >
-        <div v-else class="w-2/4 text-center">
-          <Text tag="p" class="text-red-600">Occupé</Text>
-          <Text tag="p" class="text-xs capitalize">
-            {{ useUserConnected.getFullName }} <br />
-            {{
-              format(parseInt(env.updatedAt), "dd MMMM yyyy", { locale: fr })
-            }}
-            - {{ format(parseInt(env.updatedAt), "HH:mm") }}
-          </Text>
-        </div>
-        <div class="w-1/4 grid">
-          <handle-activate
-            :activate="!env.isFree"
-            @click="(envToUpdate = env), displayPopup(env._id, false)"
-            class="justify-self-end"
-          />
-        </div>
-      </li>
-    </ul>
+          <div class="w-1/4 flex group">
+            <Text tag="p">
+              {{ env.name }}
+            </Text>
+          </div>
+          <!-- <input-field
+            :value="env.name"
+            :disabled="padlock"
+            input-type="text"
+            class="w-1/4"
+            placeholder="Nom"
+            :label-content="!padlock ? 'Nom' : null"
+            v-model="env.name"
+          /> -->
+          <Text
+            tag="p"
+            v-if="env.isFree"
+            class="w-2/4 text-green-600 text-center"
+            >Libre</Text
+          >
+          <div v-else class="w-2/4 text-center">
+            <Text tag="p" class="text-red-600">Occupé</Text>
+            <Text tag="p" class="text-xs capitalize">
+              {{ useUserConnected.getFullName }} <br />
+              {{
+                format(parseInt(env.updatedAt), "dd MMMM yyyy", { locale: fr })
+              }}
+              - {{ format(parseInt(env.updatedAt), "HH:mm") }}
+            </Text>
+          </div>
+          <div class="w-1/4 grid grid-rows-6 h-full">
+            <div class="justify-self-end self-start group row-span-1">
+              <Button
+                custom-button-class="p-0 m-0 border-0 w-5 hover:shadow-none "
+              >
+                <Icon
+                  type="outline"
+                  :d="[{ path: icons.dots_horizontal.outline.path }]"
+                  title="Modifier environnement"
+                  custom-class="text-slate-200 group-hover:text-slate-300 p-0 m-0"
+                />
+              </Button>
+            </div>
+
+            <div class="row-span-6 justify-self-center self-center pb-3.5">
+              <handle-activate
+                :activate="!env.isFree"
+                @click="(envToUpdate = env), displayPopup(env._id, false)"
+              />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
 
     <!-- POPUP CONFIRMATION -->
     <div
       v-if="popup.busy || popup.free || popup.deletedFor"
       class="absolute top-0 origin-center bg-white h-64 w-full px-4 border border-black rounded flex flex-col justify-around items-center shadow-md z-50"
     >
-      <Text tag="p" v-if="popup.busy"
-        >Vous allez libérer {{ popup.envName }}</Text
-      >
-      <Text tag="p" v-else-if="popup.free"
-        >Vous allez prendre {{ popup.envName }}</Text
-      >
-      <Text tag="p" v-else-if="popup.deletedFor">
-        Êtes vous bien sûr de vouloir supprimer {{ popup.envName }} ?
-      </Text>
-      <Text tag="p" v-if="popup.busy || popup.free">
-        N'oubliez pas de prévenir l'équipe sur #tech
+      <div class="font-bold">
+        <Text tag="h3" v-if="popup.busy"
+          >Vous allez libérer {{ popup.envName }}</Text
+        >
+        <Text tag="h3" v-else-if="popup.free"
+          >Vous allez prendre {{ popup.envName }}</Text
+        >
+        <Text tag="h3" v-else-if="popup.deletedFor">
+          Êtes vous bien sûr de vouloir supprimer {{ popup.envName }} ?
+        </Text>
+      </div>
+      <Text tag="p" v-if="popup.busy || popup.free" class="text-center">
+        Après confirmation, un message sera envoyé <br />
+        sur le canal Slack
+        <Text
+          class="bg-red-50 px-1 a-navlink"
+          tag="a"
+          href="https://slack.com/app_redirect?channel=C03KUSEMGLR"
+          target="_blank"
+          >#tech-environments-platform</Text
+        >
       </Text>
       <div class="flex flex-col w-full">
         <Button
@@ -94,17 +150,27 @@ import {
   UPDATE_ENV_DISPONIBILITY_BY_ID,
   UPDATE_ENV_NAME_BY_ID,
 } from "../graphql/Mutations/envTest";
-import { IconLoading, HandleActivate, Text, Button } from "../components/atoms";
+import {
+  IconLoading,
+  HandleActivate,
+  Text,
+  Button,
+  NavLink,
+  Icon,
+} from "../components/atoms";
+import { InputField } from "../components/molecules";
 import { GoogleAuth } from "../components/organisms";
 import userConnected from "../stores/userConnected";
 import envListStore from "../stores/envListStore";
 import { useRouter } from "vue-router";
 import type { Env } from "../interfaces/Env";
+import icons from "../assets/icons";
 
 const useUserConnected = userConnected();
 const useEnvList = envListStore();
 const router = useRouter();
 
+const padlock = ref(true);
 // console.log("useUserConnected | ", useUserConnected.getUser);
 // Liste des environnements
 const { result, loading, error } = useQuery(GET_ALL_ENV);
@@ -150,6 +216,7 @@ const resetStatusDisponibility = () => {
   popup.value.busy = false;
   popup.value.deletedFor = false;
 };
+
 const { mutate: updateEnvDisponibilityByID, onError: errorOnEditedEnv } =
   useMutation(UPDATE_ENV_DISPONIBILITY_BY_ID, () => ({
     variables: {

@@ -11,6 +11,7 @@
   "author": "Sofiane Conan",
   "license": "MIT",
   "dependencies": {
+    "@slack/webhook": "^6.1.0",
     "@typegoose/typegoose": "^9.8.1",
     "apollo-server": "^3.8.1",
     "apollo-server-core": "^3.6.1",

@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.5",
+    "@slack/webhook": "^6.1.0",
     "@vue/apollo-composable": "^4.0.0-alpha.17",
     "@vue/apollo-util": "^4.0.0-alpha.17",
     "date-fns": "^2.28.0",
