@@ -18,7 +18,6 @@ const userConnected = defineStore({
 
   actions: {
     setUserConnected(user: User) {
-      console.log("user | ", user);
       const firstName = user.email?.split("@")[0].split(".")[1];
       const lastName = user.email?.split("@")[0].split(".")[0];
 
@@ -37,7 +36,6 @@ const userConnected = defineStore({
       this.user.isAuth = false;
       this.user.isInit = false;
       this.user.role = user.roles;
-      console.log(this.user);
     },
     setAuthInfo(authInfo: AuthInfo) {
       this.user.authInfo = { ...authInfo };

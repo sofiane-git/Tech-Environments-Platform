@@ -23,10 +23,8 @@ class EnvTestResolver
   )
   {
     const userFindByEmail = await UserModel.findOne({ email: input["email"] })
-    console.log('userFindByEmail | ', userFindByEmail);
     if (userFindByEmail) {
-      const result = await EnvTestModel.create({ ...input, createdBy: userFindByEmail });
-      console.log('result | ', result);
+      await EnvTestModel.create({ ...input, createdBy: userFindByEmail });
       return {
         message: 'Environnement enregistré',
         success: true
@@ -91,7 +89,6 @@ class EnvTestResolver
   )
   { 
     const userFindByEmail = await UserModel.findOne({ email: input["email"] })
-    console.log('userFindByEmail | ', userFindByEmail);
     
     if (userFindByEmail) {
       const editedEnv = await EnvTestModel.findByIdAndUpdate(

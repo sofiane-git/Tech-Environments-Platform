@@ -1,0 +1,18 @@
+---
+
+- hosts: tag_App_EnvManager
+  gather_facts: false
+  become: false
+  remote_user: "{{ remote_user }}"
+  pre_tasks:
+    - name: INCLUDE_VARS | For testing
+      include_vars: 
+        dir: "vars/{{ __app_env_name }}/"
+      when: __app_env_name is defined and __app_env_name == 'testing'
+
+    - name: INCLUDE_VARS | For production
+      include_vars: 
+        dir: "vars/{{ __app_env_name }}/"
+      when: __app_env_name is defined and __app_env_name == 'production'
+  roles:
+    - ansistrano.deploy

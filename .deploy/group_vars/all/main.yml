@@ -1,0 +1,48 @@
+---
+
+#
+# Misc
+#
+__app_env_name: null
+
+#
+# Deployer
+#
+remote_user: 'skilleos_env'
+
+#
+# Ansistrano
+#
+ansistrano_deploy_to: null
+ansistrano_before_setup_tasks_file: "{{ playbook_dir }}/ansistrano/before-setup.yml"
+ansistrano_before_symlink_tasks_file: "{{ playbook_dir }}/ansistrano/before-symlink.yml"
+ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/ansistrano/after-symlink.yml"
+ansistrano_deploy_from: "{{ playbook_dir }}/../"
+ansistrano_allow_anonymous_stats: no
+ansistrano_keep_releases: 1
+ansistrano_rsync_extra_params:
+ - '--exclude=/docker*'
+ - '--exclude=/node_modules'
+ - '--exclude=/var/cache/*'
+ - '--exclude=/var/logs/*'
+ - '--exclude=/public/tmp'
+ - '--exclude=/public/uploads'
+ - '--exclude=/.deploy'
+ - '--exclude=/.git'
+ - '--exclude=/.gitlab*'
+ - '--exclude=/.idea'
+ - '--exclude=/*.md'
+ - '--chmod=D775,F664'
+ansistrano_rsync_use_ssh_args: yes
+ansible_python_interpreter: "/usr/bin/python3"
+
+#
+# Application config
+#
+config:
+  NODE_ENV: "{{ config_node_env }}"
+  BASE_URL: "http://localhost"
+  PORT: 3000
+  DATABASE_URL: "{{ config_database_url }}"
+  GOOGLE_CLIENT_ID: "{{ config_google_client_id }}"
+  SLACK_WEBHOOK_URL: "{{ config_slack_webhook_url }}"

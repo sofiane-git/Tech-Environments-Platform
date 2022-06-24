@@ -1,0 +1,165 @@
+---
+
+image: node:14.18.2-bullseye-slim
+
+stages:
+  - prepare
+  - build
+  - deploy
+
+variables:
+  DEPLOY_TARGET_ROOT_DIR: "/srv/skilleos_env"
+
+# ===========================================================
+# Shared
+# ===========================================================
+.deps_cache:
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - client/node_modules/
+      - server/node_modules/
+    policy: pull
+
+.before_ssh:
+  before_script:
+    - apt-get update -y
+    - apt-get install git openssh-client -y
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_DEPLOY_PRIVATE_KEY")
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile /dev/null\n" > ~/.ssh/config
+
+.testing:
+  environment:
+    name: "staging/test"
+    deployment_tier: testing
+    url: "https://${URL}"
+  variables:
+    URL: "env.test.staging.skilleos.com"
+    ANSIBLE_GROUP: "tag_App_EnvManager"
+    APP_ENV_NAME: "testing"
+
+.production:
+  environment:
+    name: production
+    deployment_tier: production
+    url: "https://${URL}"
+  variables:
+    URL: "env.staging.skilleos.com"
+    ANSIBLE_GROUP: "tag_App_EnvManager"
+    APP_ENV_NAME: "production"
+
+# ===========================================================
+# Stage: prepare
+# ===========================================================
+
+install_server_deps:
+  stage: prepare
+  extends:
+    - .deps_cache
+  cache:
+    policy: pull-push
+  script:
+    - cd server && yarn install --network-concurrency 1
+
+install_client_deps:
+  stage: prepare
+  extends:
+    - .deps_cache
+  cache:
+    policy: pull-push
+  artifacts:
+    expire_in: 1h
+    paths:
+      - client/node_modules
+  script:
+    - cd client && yarn install --network-concurrency 1
+
+# ===========================================================
+# Stage: build
+# ===========================================================
+
+build_client_testing:
+  stage: build
+  needs:
+    - install_client_deps
+  extends:
+    - .deps_cache
+    - .testing
+  cache:
+    policy: pull-push
+  artifacts:
+    expire_in: 1h
+    paths:
+      - client/dist
+  script:
+    - cd client && yarn build
+
+build_client_production:
+  stage: build
+  needs:
+    - install_client_deps
+  extends:
+    - .deps_cache
+    - .production
+  cache:
+    policy: pull-push
+  artifacts:
+    expire_in: 1h
+    paths:
+      - client/dist
+  script:
+    - cd client && yarn build
+
+# ===========================================================
+# Stage: Deploys
+# ===========================================================
+.deploy:
+  image: willhallonline/ansible:2.9.27-bullseye-slim
+  extends: .before_ssh
+  variables:
+    DEPLOY_TARGET_DIR: "${DEPLOY_TARGET_ROOT_DIR}/${URL}"
+    ANSIBLE_CONFIG: ".deploy/ansible.cfg"
+    AWS_ACCESS_KEY_ID: "${EC2_RO_AWS_ACCESS_KEY_ID}"
+    AWS_SECRET_ACCESS_KEY: "${EC2_RO_AWS_SECRET_ACCESS_KEY}"
+  script:
+    # -> Hack (due to legacy horrible config, we must export variables here). Because, variables are not overrided when specified in project level (https://gitlab.com/ylly-yyl/skilleosapp/-/settings/ci_cd)
+    # TODO: remove AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY on project level
+    - export AWS_ACCESS_KEY_ID=${EC2_RO_AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=${EC2_RO_AWS_SECRET_ACCESS_KEY}
+    # <-
+    - apt-get install rsync python3-boto3 python3-botocore -y
+    - ansible-galaxy install -r .deploy/requirements.yml
+    - echo "${ANSIBLE_VAULT_PASSWORD}" > ~/.vault_password.txt
+    - ansible-inventory -i .deploy/inventory/ --graph
+    - ansible-playbook -i .deploy/inventory --limit ${ANSIBLE_GROUP} --vault-password-file ~/.vault_password.txt -e "__app_env_name="${APP_ENV_NAME}" ansistrano_deploy_to="${DEPLOY_TARGET_DIR}"" .deploy/deploy.yml
+    - rm -f ~/.vault_password.txt
+  allow_failure: false
+
+deploy_testing:
+  stage: deploy
+  extends:
+    - .testing
+    - .deploy
+  needs:
+    - install_server_deps
+    - install_client_deps
+    - build_client_testing
+  when: manual
+
+deploy_production:
+  stage: deploy
+  extends:
+    - .production
+    - .deploy
+  needs:
+    - install_server_deps
+    - install_client_deps
+    - build_client_production
+  only:
+    - main
+  when: manual
+

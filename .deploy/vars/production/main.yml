@@ -1,0 +1,8 @@
+---
+
+#
+# Application config
+#
+
+config_node_env: "production"
+config_slack_webhook_url: "https://hooks.slack.com/services/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" 

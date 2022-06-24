@@ -1,10 +1,10 @@
 <template>
-  <div class="h-screen w-full dark:bg-neutral-900">
+  <div class="h-screen w-full">
     <div class="sm:w-4/5 md:w-3/4 lg:w-3/5 h-full mx-auto">
       <header
-        class="flex justify-center items-center py-4 border-b border-black dark:border-white relative z-10"
+        class="flex justify-center items-center py-4 border-b border-black relative z-10"
       >
-        <h1 class="text-2xl dark:text-white grow text-center">
+        <h1 class="text-2xl grow text-center pl-11">
           Utilisation des environnements de test
         </h1>
         <profil-menu />

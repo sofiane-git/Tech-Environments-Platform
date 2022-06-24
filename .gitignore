@@ -25,13 +25,12 @@ logs
 # Data
 /data
 
-
 # CLIENT #
 # Test
 */cypress/videos/
 */cypress/screenshots/
-*/src/views/HomeView.vue
 # Readme
 client/README.md
+
 
 # SERVER #

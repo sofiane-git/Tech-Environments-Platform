@@ -61,6 +61,5 @@ const handleInputType = (typeToChange: string) => {
   typeToChange === "password"
     ? (inputType.value = "text")
     : (inputType.value = "password");
-  console.log("typeToChange | ", inputType.value);
 };
 </script>

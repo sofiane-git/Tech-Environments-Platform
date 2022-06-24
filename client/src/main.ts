@@ -14,7 +14,7 @@ import gAuthPlugin from "vue3-google-oauth2";
 import config from "./config";
 
 const gAuthOptions = {
-  clientId: config.VITE_GOOGLE_CLIENT_ID,
+  clientId: config.GOOGLE_CLIENT_ID,
   scope: "email",
   prompt: "consent",
   fetch_basic_profile: false,
@@ -23,7 +23,7 @@ const gAuthOptions = {
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: "http://localhost:4000/graphql",
+  uri: `${config.BASE_URL}:${config.PORT_SERVER}`,
 });
 
 // Cache implementation

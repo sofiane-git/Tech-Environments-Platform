@@ -26,6 +26,4 @@ defineProps<{
   disabled?: boolean;
   ckboxChecked?: boolean;
 }>();
-
-onMounted(() => console.log("input mounted"));
 </script>

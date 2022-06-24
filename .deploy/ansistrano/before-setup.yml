@@ -1,0 +1,7 @@
+---
+
+- name: ASSERT | Variables are defined
+  assert:
+    that:
+      - "__app_env_name is not none"
+      - "ansistrano_deploy_to is not none"

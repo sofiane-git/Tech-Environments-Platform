@@ -3,13 +3,14 @@
     :customButtonClass="customButtonClass"
     :edit-disabled="editDisabled"
     :type="buttonType"
-    :content="buttonContent"
+    class="p-0 m-0 border-0 w-5 hover:shadow-none group"
   >
     <Icon
       :type="iconType"
       :d="d"
-      :custom-class="`mr-2 ${customIconClass}`"
+      :custom-class="`${customIconClass}`"
       :title="title"
+      class="group-hover:text-slate-300 p-0 m-0"
     />
   </Button>
 </template>
@@ -18,9 +19,8 @@
 import { Button, Icon } from "../../components/atoms";
 
 defineProps<{
-  buttonType?: "submit" | "button";
+  buttonType?: "submit";
   iconType: "solid" | "outline";
-  buttonContent: string;
   d: { path: string; fill?: string }[];
   customButtonClass?: string;
   customIconClass?: string;

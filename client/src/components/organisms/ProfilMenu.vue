@@ -14,7 +14,7 @@
           type="outline"
           title="Profil"
           :d="[{ path: icons.user_circle.outline.path }]"
-          custom-class="h-8 w-8 dark:fill-white cursor-pointer stroke-1 hover:text-gray-500"
+          custom-class="h-8 w-8 cursor-pointer stroke-1 hover:text-gray-500"
           :class="clickOnProfileMenu ? 'text-gray-300' : 'text-black'"
           @click="handleClickOnProfileMenu()"
         />

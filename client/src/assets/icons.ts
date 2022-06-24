@@ -1,5 +1,13 @@
 const icons = {
   // A
+  add_croise: {
+    outline: {
+      path: "M12 4v16m8-8H4",
+    },
+    solid: {
+      path: "M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z",
+    },
+  },
   add_croise_sm: {
     outline: {
       path: "M12 6v6m0 0v6m0-6h6m-6 0H6",

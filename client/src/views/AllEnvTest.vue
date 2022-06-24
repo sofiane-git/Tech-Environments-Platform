@@ -5,6 +5,7 @@
     <Text tag="p" v-else-if="error">Erreur: Problème de chargement...</Text>
     <div v-else-if="result && result.getAllEnv" class="grid">
       <ul
+        v-if="result.getAllEnv.length"
         class="flex flex-col justify-center mb-7"
         :class="
           popup.busy || popup.free || popup.deletedFor
@@ -50,7 +51,7 @@
           </div>
           <div class="w-1/4 grid grid-rows-6 h-full">
             <div class="justify-self-end self-start group row-span-1">
-              <Button
+              <!-- <Button
                 custom-button-class="p-0 m-0 border-0 w-5 hover:shadow-none "
               >
                 <Icon
@@ -59,7 +60,12 @@
                   title="Modifier environnement"
                   custom-class="text-slate-200 group-hover:text-slate-300 p-0 m-0"
                 />
-              </Button>
+              </Button> -->
+              <button-with-icon
+                icon-type="outline"
+                :d="[{ path: icons.dots_horizontal.outline.path }]"
+                title="Modifier environnement"
+              />
             </div>
 
             <div class="row-span-6 justify-self-center self-center pb-3.5">
@@ -71,10 +77,23 @@
           </div>
         </li>
       </ul>
+      <div v-else>
+        <Text tag="p" class="text-center mb-8"
+          >Commencez par ajouter un environnement</Text
+        >
+        <button-with-icon
+          class="justify-self-end h-full"
+          icon-type="outline"
+          :d="[{ path: icons.add_croise.outline.path }]"
+          title="Ajouter environnement"
+          custom-icon-class="w-10"
+          custom-button-class="w-10"
+        />
+      </div>
     </div>
 
     <!-- POPUP CONFIRMATION -->
-    <div
+    <!-- <div
       v-if="popup.busy || popup.free || popup.deletedFor"
       class="absolute top-0 origin-center bg-white h-64 w-full px-4 border border-black rounded flex flex-col justify-around items-center shadow-md z-50"
     >
@@ -93,9 +112,9 @@
         Après confirmation, un message sera envoyé <br />
         sur le canal Slack
         <Text
-          class="bg-red-50 px-1 a-navlink"
+          class="bg-red-50 px-1 a-navlink cursor-pointer"
           tag="a"
-          :href="config.VITE_SLACK_CHANNEL_PLATFORM"
+          :href="config.SLACK_CHANNEL_PLATFORM"
           target="_blank"
           >#tech-environments-platform</Text
         >
@@ -117,7 +136,17 @@
           Annuler
         </Button>
       </div>
-    </div>
+    </div> -->
+
+    <popup-handler
+      :popup="popup"
+      :href="config.SLACK_CHANNEL_PLATFORM"
+      :update-env="updateEnvDisponibilityByID"
+    >
+      <template #button_group>
+        <button-group :popup="popup" />
+      </template>
+    </popup-handler>
   </div>
 </template>
 
@@ -137,11 +166,15 @@ import {
   Button,
   Icon,
 } from "../components/atoms";
+import { ButtonWithIcon } from "../components/molecules";
+import { ButtonGroup } from "../components/organisms";
+import { PopupHandler } from "../components/templates";
 import userConnected from "../stores/userConnected";
 import envListStore from "../stores/envListStore";
 import type { Env } from "../interfaces/Env";
 import icons from "../assets/icons";
 import config from "../config";
+import lt from "date-fns/locale/lt";
 
 const useUserConnected = userConnected();
 const useEnvList = envListStore();
@@ -158,7 +191,9 @@ watch(loading, () => {
 
 // Gérer la popup de prévention
 const popup = ref({ envName: "", free: false, busy: false, deletedFor: false });
-
+watch(popup.value, () => {
+  console.log("popup | ", popup.value);
+});
 const displayPopup = (idForChangement: any, isForDeleted: any) => {
   result.value.getAllEnv &&
     result.value.getAllEnv.map(({ _id, isFree, name }: Env) => {
@@ -185,11 +220,11 @@ const displayPopup = (idForChangement: any, isForDeleted: any) => {
 // Changer le statut de disponibilité
 const envToUpdate: Ref<Env | undefined> = ref();
 
-const resetStatusDisponibility = () => {
-  popup.value.free = false;
-  popup.value.busy = false;
-  popup.value.deletedFor = false;
-};
+// const resetStatusDisponibility = () => {
+//   popup.value.free = false;
+//   popup.value.busy = false;
+//   popup.value.deletedFor = false;
+// };
 
 const { mutate: updateEnvDisponibilityByID, onError: errorOnEditedEnv } =
   useMutation(UPDATE_ENV_DISPONIBILITY_BY_ID, () => ({

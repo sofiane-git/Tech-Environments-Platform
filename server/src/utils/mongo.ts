@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {  URI } from "../config";
+import {  DATABASE_URL } from "../config";
 
 const options = {
   useNewUrlParser: true,
@@ -13,7 +13,7 @@ const options = {
 export const connectToMongo = async () =>
 {
   try {
-    await mongoose.connect(URI, options);
+    await mongoose.connect(DATABASE_URL, options);
     console.log("Connected to Database");
     
   } catch (error) {

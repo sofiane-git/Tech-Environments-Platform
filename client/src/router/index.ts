@@ -1,4 +1,3 @@
-import HomeViewVue from "../views/HomeView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import AllEnvTest from "../views/AllEnvTest.vue";
 import Login from "../views/Login.vue";
@@ -22,10 +21,6 @@ const router = createRouter({
       path: "/*",
       name: "404",
       redirect: "/",
-    },
-    {
-      path: "/homeview",
-      component: HomeViewVue,
     },
     {
       path: "/platform",

@@ -3,8 +3,8 @@ import Context from "../types/context";
 
 const authChecker: AuthChecker<Context> = ({ context }, roles) =>
 {
-console.log('context | ', context.req.session.user);  
-  console.log('roles | ', roles);
+// console.log('context | ', context.req.session.user);  
+//   console.log('roles | ', roles);
   // console.log('context: {user} | ', user);
   // return !!context.user;
   // if (roles.length === 0) {

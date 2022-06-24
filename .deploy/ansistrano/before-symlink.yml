@@ -1,0 +1,7 @@
+---
+
+- name: TEMPLATE | Deploy config
+  template:
+    src: templates/env.j2
+    dest: "{{ ansistrano_release_path.stdout }}/server/.env"
+

@@ -140,7 +140,6 @@ const handleSignIn = async () => {
 
     const email = googleUser.getBasicProfile().getEmail();
     // console.log(googleUser.getBasicProfile());
-    console.log(email);
 
     await authFromGoogle({ tokenId: token_id }).then((res) => {
       if (!res?.data.error) {
@@ -152,12 +151,8 @@ const handleSignIn = async () => {
       (user: User): boolean => user.email === email
     );
     if (userConnected.length) {
-      console.log(1);
-
       useUserConnected.setUserConnected(userConnected[0]);
     } else {
-      console.log(2);
-
       const user = {
         email: email,
       };
