@@ -9,6 +9,7 @@ import { resolvers } from "./graphql";
 import { connectToMongo } from "./utils/mongo";
 import bodyParser from "body-parser";
 import { NODE_ENV } from "./config";
+import cors from "cors";
 
 
 const bootstrap = async () =>
@@ -18,6 +19,7 @@ const bootstrap = async () =>
     
   })
   const app: Express = express();
+  app.use(cors())
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json())
   

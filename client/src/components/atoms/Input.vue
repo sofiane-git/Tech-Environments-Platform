@@ -15,8 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-
 defineProps<{
   id?: string;
   type: "text" | "email" | "password" | "checkbox";

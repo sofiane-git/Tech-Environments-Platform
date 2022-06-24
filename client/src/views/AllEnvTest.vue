@@ -159,13 +159,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import GET_ALL_ENV from "../graphql/Queries/envTest/GET_ALL_ENV";
 import { UPDATE_ENV_DISPONIBILITY_BY_ID } from "../graphql/Mutations/envTest";
-import {
-  IconLoading,
-  HandleActivate,
-  Text,
-  Button,
-  Icon,
-} from "../components/atoms";
+import { IconLoading, HandleActivate, Text } from "../components/atoms";
 import { ButtonWithIcon } from "../components/molecules";
 import { ButtonGroup } from "../components/organisms";
 import { PopupHandler } from "../components/templates";
@@ -194,7 +188,7 @@ const popup = ref({ envName: "", free: false, busy: false, deletedFor: false });
 watch(popup.value, () => {
   console.log("popup | ", popup.value);
 });
-const displayPopup = (idForChangement: any, isForDeleted: any) => {
+const displayPopup = (idForChangement: string, isForDeleted: boolean) => {
   result.value.getAllEnv &&
     result.value.getAllEnv.map(({ _id, isFree, name }: Env) => {
       if (_id === idForChangement) {

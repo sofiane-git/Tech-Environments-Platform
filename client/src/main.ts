@@ -23,9 +23,8 @@ const gAuthOptions = {
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: `${config.BASE_URL}:${config.PORT_SERVER}`,
+  uri: `${config.BASE_URL}:${config.PORT_SERVER}/${config.GRAPHQL_ENDPOINT}`,
 });
-
 // Cache implementation
 const cache = new InMemoryCache();
 

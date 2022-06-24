@@ -14,16 +14,16 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from "vue";
-import {
-  ForCreated,
-  ForDeleted,
-  ForDisponibility,
-  ButtonGroup,
-} from "../organisms";
+import { ForCreated, ForDeleted, ForDisponibility } from "../organisms";
 
+type Popup = {
+  envName: string;
+  free: boolean;
+  busy: boolean;
+  deletedFor: boolean;
+};
 defineProps<{
-  popup: any;
+  popup: Popup;
   href: string;
 }>();
 </script>

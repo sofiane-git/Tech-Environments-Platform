@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref, watch, watchEffect } from "vue";
+import { inject, ref } from "vue";
 import { Icon, IconLoading, Button } from "../atoms";
 import { ItemMenu } from "../molecules";
 import icons from "../../assets/icons";

@@ -28,10 +28,11 @@ Show technical environments availability.
 
 For .env in Client folder, you have to inform these keys :
 
-- VITE_GOOGLE_CLIENT_ID
-- VITE_SLACK_CHANNEL_PLATFORM
 - VITE_BASE_URL
 - VITE_PORT_SERVER
+- VITE_GRAPHQL_ENDPOINT
+- VITE_GOOGLE_CLIENT_ID
+- VITE_SLACK_CHANNEL_PLATFORM
 
 For .env in Server folder, you have to inform these keys :
 
